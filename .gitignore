@@ -1,0 +1,13 @@
+**/.vs
+**/.idea
+**/bin
+**/obj
+**.DS_Store
+**/Properties
+Attachments.Concur.sln.DotSettings.user
+**/*.ncrunchsolution.user
+/_NCrunch_Attachments.Concur/Attachments.Concur.crunchsolution.cache
+/_NCrunch_Attachments.Concur/Attachments.Concur.executiontimes.cache
+/Attachments.Concur.v3.ncrunchsolution
+/_NCrunch_Attachments.Concur/StoredText/a642885d408d4c70b6dc5e311cf2db09
+/_NCrunch_Attachments.Concur/StoredText
