@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<ICurrentDateProvider, CurrentDateProvider>();
+
 // Adding Singletron for Universal Fees Exchange
 builder.Services.AddSingleton<IUFEClient, UFESimulator>();
 
@@ -74,18 +75,11 @@ builder.Services.AddAuthentication(authOptions =>
     paramsValidation.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.SecretJwtKey!));
     paramsValidation.ValidAudience = tokenConfigurations.Audience;
     paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
-    // Valida a assinatura de um token recebido
     paramsValidation.ValidateIssuerSigningKey = true;
-    // Verifica se um token recebido ainda é válido
     paramsValidation.ValidateLifetime = true;
-    // Tempo de tolerância para a expiração de um token (utilizado
-    // caso haja problemas de sincronismo de horário entre diferentes
-    // computadores envolvidos no processo de comunicação)
     paramsValidation.ClockSkew = TimeSpan.Zero;
 });
 
-// Ativa o uso do token como forma de autorizar o acesso
-// a recursos deste projeto
 builder.Services.AddAuthorization(auth =>
 {
     auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -95,7 +89,6 @@ builder.Services.AddAuthorization(auth =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

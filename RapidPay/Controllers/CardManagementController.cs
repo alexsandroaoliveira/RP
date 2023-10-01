@@ -25,6 +25,8 @@ public class CardManagementController : ControllerBase
     {
         var card = await _cardServices.CreateCardAsync();
 
+        _logger.LogInformation("Card created: {card}", card.Number);
+
         return Ok(card);
     }
 
@@ -34,9 +36,14 @@ public class CardManagementController : ControllerBase
         var card = await _cardServices.GetCardAsync(cardNumber);
 
         if (card == null)
+        {
+            _logger.LogWarning("Post PayAsync - Card not found: {card}", cardNumber);
             return NotFound();
+        }
 
-        var _ = await _transactionServices.CreateTransactionAsync(card, amount);
+        var payment = await _transactionServices.CreateTransactionAsync(card, amount);
+
+        _logger.LogInformation("Post PayAsync - Payment created: {card}, {amount}", payment.Card.Number, payment.Amount);
 
         return Accepted();
     }
@@ -47,9 +54,14 @@ public class CardManagementController : ControllerBase
         var card = await _cardServices.GetCardAsync(cardNumber);
 
         if (card == null)
+        {
+            _logger.LogWarning("Post PayAsync - Card not found: {card}", cardNumber);
             return NotFound();
-        
+        }
+
         var balance = await _transactionServices.GetBalanceAsync(card);
+
+        _logger.LogInformation("Post GetBalanceAsync - Card: {card} Balance: {amount}", cardNumber, balance);
 
         return Ok(balance);
     }
