@@ -1,4 +1,6 @@
 using RapidPay.Modules.CardManagement.Data;
+using RapidPay.Modules.CardManagement.Services;
+using RapidPay.Modules.PaymentFees.Services;
 using UFE;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +12,16 @@ builder.Services.AddSingleton<IUFEClient, UFESimulator>();
 
 builder.Services.AddSingleton<RapidPayRepository>();
 
+// CardManagement
+builder.Services.AddScoped<ICardNumberServices, CardNumberServices>();
+builder.Services.AddScoped<ICardServices, CardServices>();
+builder.Services.AddScoped<ITransactionServices, TransactionServices>();
+
+// PaymentFees
+builder.Services.AddScoped<IPaymentFeesServices, PaymentFeesServices>();
+
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

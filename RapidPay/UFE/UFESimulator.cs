@@ -14,7 +14,7 @@ public class UFESimulator : IUFEClient
     public decimal GetCurrentFee()
     {
         var currentDate = _currentDateProvider.GetCurrentDate();
-        if (currentDate.Day != feeCreatedDate.Day || currentDate.Hour != feeCreatedDate.Hour)
+        if (currentDate.Day != feeCreatedDate.Day || currentDate.Hour != feeCreatedDate.Hour || fee == -1)
         {
             fee = (decimal)new Random().Next(200) / 100;
             feeCreatedDate = currentDate;
