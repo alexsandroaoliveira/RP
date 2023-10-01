@@ -9,7 +9,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
     public class TransactionServicesTests
     {
         [Fact]
-        public void CreateTransaction_Tests()
+        public async Task CreateTransaction_Tests()
         {
             // Arrange
             var card = new Card { Number = "000000000000001" };
@@ -23,7 +23,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var service = new TransactionServices(repository, mockPaymentFeeService.Object);
 
             // Act
-            var transaction = service.CreateTransaction(card, amount);
+            var transaction = await service.CreateTransactionAsync(card, amount);
 
             // Assert
             Assert.NotNull(transaction);
@@ -35,7 +35,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         }
 
         [Fact]
-        public void GetBalance_Tests()
+        public async Task GetBalance_Tests()
         {
             // Arrange
             RapidPayContext.LastFee = 1;
@@ -50,18 +50,18 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var card2 = new Card { Number = "000000000000002" };
             var card3 = new Card { Number = "000000000000003" };
 
-            service.CreateTransaction(card1, 10);
-            service.CreateTransaction(card2, 10);
-            service.CreateTransaction(card1, 10);
-            service.CreateTransaction(card3, 10);
-            service.CreateTransaction(card1, 10);
-            service.CreateTransaction(card2, 10);
-            service.CreateTransaction(card1, 10);
+            await service.CreateTransactionAsync(card1, 10);
+            await service.CreateTransactionAsync(card2, 10);
+            await service.CreateTransactionAsync(card1, 10);
+            await service.CreateTransactionAsync(card3, 10);
+            await service.CreateTransactionAsync(card1, 10);
+            await service.CreateTransactionAsync(card2, 10);
+            await service.CreateTransactionAsync(card1, 10);
 
             // Act
-            var balanceCard1 = service.GetBalance(card1);
-            var balanceCard2 = service.GetBalance(card2);
-            var balanceCard3 = service.GetBalance(card3);
+            var balanceCard1 = await service.GetBalanceAsync(card1);
+            var balanceCard2 = await service.GetBalanceAsync(card2);
+            var balanceCard3 = await service.GetBalanceAsync(card3);
 
             // Assert
             Assert.Equal(46m, balanceCard1);

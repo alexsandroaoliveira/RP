@@ -4,8 +4,8 @@ namespace RapidPay.Modules.CardManagement.Services
 {
     public interface ITransactionServices
     {
-        Transaction CreateTransaction(Card card, decimal amount);
+        Task<Transaction> CreateTransactionAsync(Card card, decimal amount);
 
-        decimal GetBalance(Card card);
+        Task<decimal> GetBalanceAsync(Card card);
     }
 }

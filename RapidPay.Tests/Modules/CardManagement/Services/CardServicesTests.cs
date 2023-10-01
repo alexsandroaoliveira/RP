@@ -8,7 +8,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
     public class CardServicesTests
     {
         [Fact]
-        public void CreateCard_Tests()
+        public async Task CreateCard_Tests()
         {
             // Arrange
             var repository = new RapidPayRepository();
@@ -20,7 +20,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
             // Act
-            var card1 = cardService.CreateCard();
+            var card1 = await cardService.CreateCardAsync();
 
             // Assert
             Assert.NotNull(card1);
@@ -31,7 +31,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         }
 
         [Fact]
-        public void CreateCard_ConflictResolveTests()
+        public async Task CreateCard_ConflictResolveTests()
         {
             // Arrange
             var repository = new RapidPayRepository();
@@ -48,7 +48,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
             // Act
-            var card1 = cardService.CreateCard();
+            var card1 = await cardService.CreateCardAsync();
 
             // Assert
             Assert.NotNull(card1);
@@ -59,7 +59,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         }
 
         [Fact]
-        public void GetCards()
+        public async Task GetCards()
         {
             // Arrange
             var repository = new RapidPayRepository();
@@ -71,7 +71,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
             // Act
-            var cards = cardService.GetCards();
+            var cards = await cardService.GetCardsAsync();
 
             // Assert
             Assert.NotNull(cards);
@@ -79,7 +79,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         }
 
         [Fact]
-        public void GetCard_Existing()
+        public async Task GetCard_Existing()
         {
             // Arrange
             var repository = new RapidPayRepository();
@@ -92,7 +92,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
             // Act
-            var card = cardService.GetCard("000000000000002");
+            var card = await cardService.GetCardAsync("000000000000002");
 
             // Assert
             Assert.NotNull(card);
@@ -100,7 +100,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         }
 
         [Fact]
-        public void GetCard_NonExisting()
+        public async Task GetCard_NonExisting()
         {
             // Arrange
             var repository = new RapidPayRepository();
@@ -113,7 +113,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
             // Act
-            var card = cardService.GetCard("000000000000004");
+            var card = await cardService.GetCardAsync("000000000000004");
 
             // Assert
             Assert.Null(card);

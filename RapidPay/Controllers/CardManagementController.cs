@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RapidPay.Modules.CardManagement.Models;
 using RapidPay.Modules.CardManagement.Services;
 
 namespace RapidPay.Controllers;
@@ -22,33 +21,35 @@ public class CardManagementController : ControllerBase
     }
 
     [HttpGet("CreateCard")]
-    public IActionResult CreateCard()
+    public async Task<IActionResult> CreateCardAsync()
     {
-        return Ok(_cardServices.CreateCard());
+        var card = await _cardServices.CreateCardAsync();
+
+        return Ok(card);
     }
 
     [HttpPost("Pay")]
-    public IActionResult Pay(string cardNumber, decimal amount)
+    public async Task<IActionResult> PayAsync(string cardNumber, decimal amount)
     {
-        var card = _cardServices.GetCard(cardNumber);
+        var card = await _cardServices.GetCardAsync(cardNumber);
 
         if (card == null)
             return NotFound();
 
-        var _ = _transactionServices.CreateTransaction(card, amount);
+        var _ = await _transactionServices.CreateTransactionAsync(card, amount);
 
         return Accepted();
     }
 
     [HttpGet("GetBalance")]
-    public IActionResult GetBalance(string cardNumber)
+    public async Task<IActionResult> GetBalanceAsync(string cardNumber)
     {
-        var card = _cardServices.GetCard(cardNumber);
+        var card = await _cardServices.GetCardAsync(cardNumber);
 
         if (card == null)
             return NotFound();
         
-        var balance = _transactionServices.GetBalance(card);
+        var balance = await _transactionServices.GetBalanceAsync(card);
 
         return Ok(balance);
     }

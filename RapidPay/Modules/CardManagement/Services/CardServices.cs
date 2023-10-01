@@ -15,12 +15,12 @@ namespace RapidPay.Modules.CardManagement.Services
             _cardNumberServices = cardNumberServices;
         }
 
-        public Card CreateCard()
+        public async Task<Card> CreateCardAsync()
         {
             var cardNumber = _cardNumberServices.GenetateCardNumber();
 
             if (_repository.Cards.Any(c => c.Number == cardNumber))
-                return CreateCard();
+                return await CreateCardAsync();
 
             var newCard = new Card { Number = cardNumber };
 
@@ -29,9 +29,10 @@ namespace RapidPay.Modules.CardManagement.Services
             return newCard;
         }
 
-        public Card? GetCard(string number) =>
-            _repository.Cards.FirstOrDefault(c => c.Number == number);
+        public Task<Card?> GetCardAsync(string number) =>
+            Task.FromResult(_repository.Cards.FirstOrDefault(c => c.Number == number));
 
-        public IEnumerable<Card> GetCards() => _repository.Cards;
+        public Task<IEnumerable<Card>> GetCardsAsync() =>
+            Task.FromResult((IEnumerable<Card>)_repository.Cards);
     }
 }

@@ -4,10 +4,10 @@ namespace RapidPay.Modules.CardManagement.Services
 {
     public interface ICardServices
     {
-        Card CreateCard();
+        Task<Card> CreateCardAsync();
 
-        Card? GetCard(string number);
+        Task<Card?> GetCardAsync(string number);
 
-        IEnumerable<Card> GetCards();
+        Task<IEnumerable<Card>> GetCardsAsync();
     }
 }

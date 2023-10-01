@@ -15,7 +15,7 @@ namespace RapidPay.Modules.CardManagement.Services
             _paymentFeesServices = paymentFeesServices;
         }
 
-        public Transaction CreateTransaction(Card card, decimal amount)
+        public  Task<Transaction> CreateTransactionAsync(Card card, decimal amount)
         {
             var newTransaction = new Transaction
             {
@@ -26,12 +26,13 @@ namespace RapidPay.Modules.CardManagement.Services
 
             _repository.Transactions.Add(newTransaction);
 
-            return newTransaction;
+            return Task.FromResult(newTransaction);
         }
 
-        public decimal GetBalance(Card card) =>
-            _repository.Transactions
-                .Where(o => o.Card == card)
-                .Sum(o => o.Amount + o.Fee);
+        public  Task<decimal> GetBalanceAsync(Card card) =>
+            Task.FromResult(
+                _repository.Transactions
+                    .Where(o => o.Card == card)
+                    .Sum(o => o.Amount + o.Fee));
     }
 }
