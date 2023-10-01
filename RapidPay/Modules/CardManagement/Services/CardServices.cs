@@ -1,7 +1,7 @@
-﻿using RapidPay.Data;
-using RapidPay.Models;
+﻿using RapidPay.Modules.CardManagement.Data;
+using RapidPay.Modules.CardManagement.Models;
 
-namespace RapidPay.Services
+namespace RapidPay.Modules.CardManagement.Services
 {
     public class CardServices : ICardServices
     {
@@ -29,7 +29,7 @@ namespace RapidPay.Services
             return newCard;
         }
 
-        public Card? GetCard(string number) => 
+        public Card? GetCard(string number) =>
             _repository.Cards.FirstOrDefault(c => c.Number == number);
 
         public IEnumerable<Card> GetCards() => _repository.Cards;

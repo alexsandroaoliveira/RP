@@ -1,7 +1,7 @@
-﻿using RapidPay.Models;
+﻿using RapidPay.Modules.CardManagement.Models;
 using System.Collections.Concurrent;
 
-namespace RapidPay.Data
+namespace RapidPay.Modules.CardManagement.Data
 {
     public class RapidPayRepository
     {

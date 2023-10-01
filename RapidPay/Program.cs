@@ -1,4 +1,4 @@
-using RapidPay.Data;
+using RapidPay.Modules.CardManagement.Data;
 using UFE;
 
 var builder = WebApplication.CreateBuilder(args);

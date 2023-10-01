@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Models
+﻿namespace RapidPay.Modules.CardManagement.Models
 {
     public class Card
     {

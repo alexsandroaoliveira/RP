@@ -1,8 +1,8 @@
-﻿using RapidPay.Data;
-using RapidPay.Models;
-using RapidPay.Services;
+﻿using RapidPay.Modules.CardManagement.Data;
+using RapidPay.Modules.CardManagement.Models;
+using RapidPay.Modules.CardManagement.Services;
 
-namespace RapidPay.Tests.Services
+namespace RapidPay.Tests.Modules.CardManagement.Services
 {
     public class TransactionServicesTests
     {

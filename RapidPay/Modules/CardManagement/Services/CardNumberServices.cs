@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace RapidPay.Services
+namespace RapidPay.Modules.CardManagement.Services
 {
-    public class CardNumberServices: ICardNumberServices
+    public class CardNumberServices : ICardNumberServices
     {
         private const int DIGITS_NUMBER = 15;
 

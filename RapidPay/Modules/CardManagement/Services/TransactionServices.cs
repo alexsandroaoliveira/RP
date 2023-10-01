@@ -1,7 +1,7 @@
-﻿using RapidPay.Data;
-using RapidPay.Models;
+﻿using RapidPay.Modules.CardManagement.Data;
+using RapidPay.Modules.CardManagement.Models;
 
-namespace RapidPay.Services
+namespace RapidPay.Modules.CardManagement.Services
 {
     public class TransactionServices : ITransactionServices
     {

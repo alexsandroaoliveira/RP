@@ -1,4 +1,4 @@
-﻿namespace RapidPay.Services
+﻿namespace RapidPay.Modules.CardManagement.Services
 {
     public interface ICardNumberServices
     {

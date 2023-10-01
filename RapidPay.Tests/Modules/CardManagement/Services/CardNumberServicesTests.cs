@@ -1,7 +1,7 @@
-﻿using RapidPay.Services;
+﻿using RapidPay.Modules.CardManagement.Services;
 using System.Text.RegularExpressions;
 
-namespace RapidPay.Tests.Services
+namespace RapidPay.Tests.Modules.CardManagement.Services
 {
     public class CardNumberServicesTests
     {

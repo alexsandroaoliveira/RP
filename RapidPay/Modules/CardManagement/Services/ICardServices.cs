@@ -1,6 +1,6 @@
-﻿using RapidPay.Models;
+﻿using RapidPay.Modules.CardManagement.Models;
 
-namespace RapidPay.Services
+namespace RapidPay.Modules.CardManagement.Services
 {
     public interface ICardServices
     {
