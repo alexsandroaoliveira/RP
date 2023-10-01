@@ -1,6 +1,8 @@
-﻿using RapidPay.Modules.CardManagement.Data;
+﻿using Moq;
+using RapidPay.Modules.CardManagement.Data;
 using RapidPay.Modules.CardManagement.Models;
 using RapidPay.Modules.CardManagement.Services;
+using RapidPay.Modules.PaymentFees.Services;
 
 namespace RapidPay.Tests.Modules.CardManagement.Services
 {
@@ -12,10 +14,13 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             // Arrange
             var card = new Card { Number = "000000000000001" };
             decimal amount = 10;
+            decimal fee = 1.5m;
 
             var repository = new RapidPayRepository();
+            var mockPaymentFeeService = new Mock<IPaymentFeesServices>();
+            mockPaymentFeeService.Setup(o => o.GetPaymentFee()).Returns(fee);
 
-            var service = new TransactionServices(repository);
+            var service = new TransactionServices(repository, mockPaymentFeeService.Object);
 
             // Act
             var transaction = service.CreateTransaction(card, amount);
@@ -24,6 +29,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             Assert.NotNull(transaction);
             Assert.Equal(card, transaction.Card);
             Assert.Equal(amount, transaction.Amount);
+            Assert.Equal(fee, transaction.Fee);
 
             Assert.Single(repository.Transactions);
         }
@@ -32,8 +38,13 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
         public void GetBalance_Tests()
         {
             // Arrange
+            RapidPayContext.LastFee = 1;
             var repository = new RapidPayRepository();
-            var service = new TransactionServices(repository);
+
+            var mockPaymentFeeService = new Mock<IPaymentFeesServices>();
+            mockPaymentFeeService.Setup(o => o.GetPaymentFee()).Returns(1.5m);
+
+            var service = new TransactionServices(repository, mockPaymentFeeService.Object);
 
             var card1 = new Card { Number = "000000000000001" };
             var card2 = new Card { Number = "000000000000002" };
@@ -53,9 +64,9 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             var balanceCard3 = service.GetBalance(card3);
 
             // Assert
-            Assert.Equal(40, balanceCard1);
-            Assert.Equal(20, balanceCard2);
-            Assert.Equal(10, balanceCard3);
+            Assert.Equal(46m, balanceCard1);
+            Assert.Equal(23m, balanceCard2);
+            Assert.Equal(11.5m, balanceCard3);
         }
     }
 }

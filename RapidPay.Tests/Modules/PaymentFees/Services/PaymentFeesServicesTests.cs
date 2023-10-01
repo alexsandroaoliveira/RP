@@ -10,6 +10,7 @@ namespace RapidPay.Tests.Modules.PaymentFees.Services
         public void GetPaymentFee_FirstTime_Test()
         {
             // Arrange
+            RapidPayContext.LastFee = 1;
             var client = new Mock<IUFEClient>();
             var service = new PaymentFeesServices(client.Object);
 
