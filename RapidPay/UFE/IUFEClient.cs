@@ -1,6 +1,6 @@
 namespace UFE;
 
-interface IUFEClient
+public interface IUFEClient
 {
     decimal GetCurrentFee();
 }
