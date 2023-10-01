@@ -5,6 +5,7 @@ using RapidPay.Modules.CardManagement.Services;
 
 namespace RapidPay.Controllers;
 
+[Authorize("Bearer")]
 [ApiController]
 [Route("[controller]")]
 public class CardManagementController : ControllerBase
@@ -21,29 +22,34 @@ public class CardManagementController : ControllerBase
     }
 
     [HttpGet("CreateCard")]
-    public Card CreateCard()
+    public IActionResult CreateCard()
     {
-        return _cardServices.CreateCard();
+        return Ok(_cardServices.CreateCard());
     }
 
     [HttpPost("Pay")]
-    public void Pay(string cardNumber, decimal amount)
+    public IActionResult Pay(string cardNumber, decimal amount)
     {
-        Card card = GetCard(cardNumber);
+        var card = _cardServices.GetCard(cardNumber);
+
+        if (card == null)
+            return NotFound();
 
         var _ = _transactionServices.CreateTransaction(card, amount);
+
+        return Accepted();
     }
 
     [HttpGet("GetBalance")]
-    public decimal GetBalance(string cardNumber)
+    public IActionResult GetBalance(string cardNumber)
     {
-        Card card = GetCard(cardNumber);
-        
-        return _transactionServices.GetBalance(card);
-    }
+        var card = _cardServices.GetCard(cardNumber);
 
-    private Card GetCard(string cardNumber)
-    {
-        return _cardServices.GetCard(cardNumber) ?? throw new Exception("Invalid Card Number.");
+        if (card == null)
+            return NotFound();
+        
+        var balance = _transactionServices.GetBalance(card);
+
+        return Ok(balance);
     }
 }
