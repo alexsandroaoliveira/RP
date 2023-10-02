@@ -1,6 +1,6 @@
-# RapidPay
+# RP
 
-RapidPay as a payment provider needs YOU to develop its new Authorization system and is willing to
+RP as a payment provider needs YOU to develop its new Authorization system and is willing to
 pay accordingly!
 
 ## Table of Contents
@@ -12,6 +12,7 @@ pay accordingly!
     - [Payment Fees module](#payment-fees-module)
     - [UFE Simulator](#ufe-simulator)
 - [Development](#development)
+- [Roadmap](#roadmap)
 
 ## Tech
 
@@ -55,3 +56,10 @@ The new fee price is the last fee amount multiplied by the recent random decimal
 ## Development
 
 Commitment history shows the development strategy. The project is structured close to DDD archteture. Unit tests was develop together with the main code layer by layer giving a good test coverage.
+
+## Roadmap
+
+- Swith the in-memory "Database" to a RMDBMS.
+- Use a reliable identity service
+- Pipelines for C.I.
+
