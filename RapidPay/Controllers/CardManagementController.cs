@@ -4,8 +4,8 @@ using RapidPay.Modules.CardManagement.Services;
 
 namespace RapidPay.Controllers;
 
-[Authorize("Bearer")]
 [ApiController]
+[Authorize("Bearer")]
 [Route("[controller]")]
 public class CardManagementController : ControllerBase
 {

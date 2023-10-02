@@ -12,25 +12,30 @@ using UFE;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
+
+// Adding as singleton, Could be a static class as well
 builder.Services.AddSingleton<ICurrentDateProvider, CurrentDateProvider>();
 
-// Adding Singletron for Universal Fees Exchange
+// Adding Singleton for Universal Fees Exchange
 builder.Services.AddSingleton<IUFEClient, UFESimulator>();
 
+// Adding Singleton for in-memory database
 builder.Services.AddSingleton<RapidPayRepository>();
 
-// CardManagement
+// CardManagement Module
 builder.Services.AddScoped<ICardNumberServices, CardNumberServices>();
 builder.Services.AddScoped<ICardServices, CardServices>();
 builder.Services.AddScoped<ITransactionServices, TransactionServices>();
 
-// PaymentFees
+// PaymentFees Module
 builder.Services.AddScoped<IPaymentFeesServices, PaymentFeesServices>();
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+// Adding swagger gen with Login in feature
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RapidPay", Version = "v1" });
@@ -60,11 +65,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Getting token config from AppSettings
 var tokenConfigurations = new TokenConfigurations();
 new ConfigureFromConfigurationOptions<TokenConfigurations>(
     builder.Configuration.GetSection("TokenConfigurations"))
         .Configure(tokenConfigurations);
 
+// Adding Authentication Services to work with Bearer Jwt Token
 builder.Services.AddAuthentication(authOptions =>
 {
     authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -80,6 +87,7 @@ builder.Services.AddAuthentication(authOptions =>
     paramsValidation.ClockSkew = TimeSpan.Zero;
 });
 
+// Adding Authorization Services to work with Bearer Jwt Token
 builder.Services.AddAuthorization(auth =>
 {
     auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()

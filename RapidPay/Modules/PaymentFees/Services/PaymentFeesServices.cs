@@ -2,6 +2,9 @@
 
 namespace RapidPay.Modules.PaymentFees.Services
 {
+    /// <summary>
+    /// Services to work with Payment Fees. Using UFE integration.
+    /// </summary>
     public class PaymentFeesServices : IPaymentFeesServices
     {
         private readonly IUFEClient _uFEClient;
@@ -11,12 +14,19 @@ namespace RapidPay.Modules.PaymentFees.Services
             _uFEClient = uFEClient;
         }
 
+        /// <summary>
+        /// Get the current Payment Fee
+        /// </summary>
+        /// <returns>Payment fee</returns>
         public decimal GetPaymentFee()
         {
+            // Call UFE to get current fee;
             var ufeFee = _uFEClient.GetCurrentFee();
 
+            // Req: "The new fee price is the last fee amount multiplied by the recent random decimal"
             var fee = RapidPayContext.LastFee * ufeFee;
 
+            // Updating LastFee;
             RapidPayContext.LastFee = fee;
 
             return fee;

@@ -88,6 +88,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             repository.Cards.Add(new Card { Number = "000000000000003" });
 
             var mockCardNumberServices = new Mock<ICardNumberServices>();
+            mockCardNumberServices.Setup(o => o.IsValid(It.IsAny<string>())).Returns(true);
 
             var cardService = new CardServices(repository, mockCardNumberServices.Object);
 
@@ -97,6 +98,7 @@ namespace RapidPay.Tests.Modules.CardManagement.Services
             // Assert
             Assert.NotNull(card);
             Assert.Equal("000000000000002", card.Number);
+            mockCardNumberServices.Verify(o => o.IsValid(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
