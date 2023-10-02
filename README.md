@@ -12,7 +12,7 @@ pay accordingly!
     - [Payment Fees module](#payment-fees-module)
     - [UFE Simulator](#ufe-simulator)
 - [Development](#development)
-- [Roadmap](#roadmap)
+- [Roadmap](#roadmap---improvements-i-would-like-to-do)
 
 ## Tech
 
@@ -57,9 +57,10 @@ The new fee price is the last fee amount multiplied by the recent random decimal
 
 Commitment history shows the development strategy. The project is structured close to DDD archteture. Unit tests was develop together with the main code layer by layer giving a good test coverage.
 
-## Roadmap
+## Roadmap - Improvements I would like to do:
 
-- Swith the in-memory "Database" to a RMDBMS.
-- Use a reliable identity service
+- Swith the in-memory "Database" to a RMDBMS as Microsoft SQL Server. With this, trully use async methods
+- Use a reliable identity service as `Okta` or `Keycloak`
+- Divide Modules and UFE simulatior into individuals Micro-Services
 - Pipelines for C.I.
 

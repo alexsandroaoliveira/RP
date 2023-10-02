@@ -20,5 +20,10 @@
         /// Transaction Fee Amount
         /// </summary>
         public decimal Fee { get; set; } = 0;
+
+        /// <summary>
+        /// Transaction Date
+        /// </summary>
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

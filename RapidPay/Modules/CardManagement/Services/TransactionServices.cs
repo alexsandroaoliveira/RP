@@ -24,19 +24,23 @@ namespace RapidPay.Modules.CardManagement.Services
         /// <param name="card">Card Number</param>
         /// <param name="amount">Transaction amount</param>
         /// <returns>Created transactions</returns>
-        public Task<Transaction> CreateTransactionAsync(Card card, decimal amount)
+        public async Task<Transaction> CreateTransactionAsync(Card card, decimal amount)
         {
+            var lastTransaction = (await GetCardTransactions(card))
+                .OrderBy(x => x.Date) //Preformance could be improved using sorted list
+                .LastOrDefault();
+
             var newTransaction = new Transaction
             {
                 Card = card,
                 Amount = amount,
-                Fee = _paymentFeesServices.GetPaymentFee()
+                Fee = _paymentFeesServices.GetPaymentFee(lastTransaction?.Fee ?? 1)
             };
 
             // Adding transaction to the Database.
             _repository.Transactions.Add(newTransaction);
 
-            return Task.FromResult(newTransaction);
+            return newTransaction;
         }
 
         /// <summary>
@@ -44,12 +48,23 @@ namespace RapidPay.Modules.CardManagement.Services
         /// </summary>
         /// <param name="card">Card</param>
         /// <returns>Card transaction balance</returns>
-        public Task<decimal> GetBalanceAsync(Card card) =>
-            Task.FromResult(
-                _repository.Transactions
-                    // Using Linq to filter the card's transactions
-                    .Where(o => o.Card == card)
-                    // Sum Amount and Fee to result the balance
-                    .Sum(o => o.Amount + o.Fee));
+        public async Task<decimal> GetBalanceAsync(Card card)
+        {
+            var cardTransactions = await GetCardTransactions(card);
+
+            // Sum Amount and Fee to result the balance
+            return cardTransactions.Sum(o => o.Amount + o.Fee);
+        }
+
+        /// <summary>
+        /// Get all card's transaction
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public Task<IEnumerable<Transaction>> GetCardTransactions(Card card) =>
+            Task.FromResult(_repository.Transactions
+                // Using Linq to filter the card's transactions
+                .Where(o => o.Card == card));
+
     }
 }

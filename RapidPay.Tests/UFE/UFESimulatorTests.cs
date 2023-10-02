@@ -1,4 +1,5 @@
-﻿using UFE;
+﻿using Moq;
+using UFE;
 
 namespace RapidPay.Tests.UFE;
 
@@ -8,14 +9,17 @@ public class UFESimulatorTests
     public void GetCurrentFee()
     {
         // Arrange
-        var dateProvider = new CurrentDateProviderTest();
-        dateProvider.DateTimes.Enqueue(new DateTime(2023, 1, 1, 10, 0, 0)); // Initial
-        dateProvider.DateTimes.Enqueue(new DateTime(2023, 1, 1, 10, 1, 0)); // Same hour from previous
-        dateProvider.DateTimes.Enqueue(new DateTime(2023, 1, 1, 11, 0, 0)); // Different hour from previous
-        dateProvider.DateTimes.Enqueue(new DateTime(2023, 1, 2, 11, 0, 0)); // Different day from previous
-        dateProvider.DateTimes.Enqueue(new DateTime(2023, 1, 3, 20, 0, 0)); // Different day and hour from previous
+        var dateTimes = new Queue<DateTime>();
+        dateTimes.Enqueue(new DateTime(2023, 1, 1, 10, 0, 0)); // Initial
+        dateTimes.Enqueue(new DateTime(2023, 1, 1, 10, 1, 0)); // Same hour from previous
+        dateTimes.Enqueue(new DateTime(2023, 1, 1, 11, 0, 0)); // Different hour from previous
+        dateTimes.Enqueue(new DateTime(2023, 1, 2, 11, 0, 0)); // Different day from previous
+        dateTimes.Enqueue(new DateTime(2023, 1, 3, 20, 0, 0)); // Different day and hour from previous
 
-        UFESimulator sim = new UFESimulator(dateProvider);
+        var dateProvider = new Mock<ICurrentDateProvider>();
+        dateProvider.Setup(o => o.GetCurrentDate()).Returns(() => dateTimes.Dequeue());
+
+        UFESimulator sim = new UFESimulator(dateProvider.Object);
 
         // Act
         var fee1 = sim.GetCurrentFee();
@@ -35,12 +39,6 @@ public class UFESimulatorTests
         Assert.NotEqual(fee2, fee3); // Should be different fee, retrived on different hour
         Assert.NotEqual(fee3, fee4); // Should be different fee, retrived on different day
         Assert.NotEqual(fee4, fee5); // Should be different fee, retrived on different day and hour
-    }
-
-    class CurrentDateProviderTest : ICurrentDateProvider
-    {
-        public Queue<DateTime> DateTimes { get; set; } = new Queue<DateTime>();
-
-        public DateTime GetCurrentDate() => DateTimes.Dequeue();
+        dateProvider.Verify(o => o.GetCurrentDate(), Times.Exactly(5));
     }
 }

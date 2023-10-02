@@ -9,6 +9,6 @@
         /// Get the current Payment Fee
         /// </summary>
         /// <returns>Payment fee</returns>
-        decimal GetPaymentFee();
+        decimal GetPaymentFee(decimal lastFee);
     }
 }
